@@ -59,9 +59,16 @@ include_directories(include)
 ################################################################################
 # Targets
 
-# zdepth library
+if (WIN32 AND BUILD_SHARED_LIBS)
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    if (WIN32)
+        set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+        include(GenerateExportHeader)
+    endif ()
+endif ()
 
-add_library(zdepth STATIC ${SOURCE_FILES})
+# zdepth library
+add_library(zdepth ${SOURCE_FILES})
 add_library(zdepth::zdepth ALIAS zdepth)
 
 target_link_libraries(zdepth PUBLIC zstd)
