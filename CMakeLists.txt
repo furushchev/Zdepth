@@ -26,10 +26,10 @@ else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedefs")
 
     # Static library: -fPIC
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -march=native")
 
-    set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -march=native -fstack-protector")
-    set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native")
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -fstack-protector")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 endif()
 
 
