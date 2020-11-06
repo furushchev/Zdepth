@@ -72,7 +72,7 @@ add_library(zdepth ${SOURCE_FILES})
 add_library(zdepth::zdepth ALIAS zdepth)
 
 target_link_libraries(zdepth PUBLIC zstd)
-
+set_target_properties(zdepth PROPERTIES PUBLIC_HEADER include/zdepth.hpp)
 target_include_directories(zdepth PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include>"
@@ -87,7 +87,24 @@ target_link_libraries(zdepth_test PRIVATE zdepth)
 ################################################################################
 # Install
 
+include(GNUInstallDirs)
+
 install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES README.md DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(DIRECTORY cmake include DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(TARGETS zdepth DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+install(TARGETS zdepth
+    EXPORT zdepth-target
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(EXPORT zdepth-target DESTINATION ${CMAKE_INSTALL_PREFIX}/share/Zdepth/cmake
+  EXPORT_LINK_INTERFACE_LIBRARIES)
+install(EXPORT zstd-target DESTINATION ${CMAKE_INSTALL_PREFIX}/share/Zdepth/cmake
+  EXPORT_LINK_INTERFACE_LIBRARIES)
+
+include(CMakePackageConfigHelpers)
+configure_package_config_file(cmake/ZdepthConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/ZdepthConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/share/Zdepth/cmake)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ZdepthConfig.cmake
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/share/Zdepth/cmake)

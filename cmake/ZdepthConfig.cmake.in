@@ -1,0 +1,4 @@
+@PACKAGE_INIT@
+
+include(${CMAKE_CURRENT_LIST_DIR}/zstd-target.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/zdepth-target.cmake)
